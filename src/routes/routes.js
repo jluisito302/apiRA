@@ -17,6 +17,9 @@ router.get('/productos', cController.findProductos);
 
 router.get('/tiendas', cController.findTiendas);
 
+router.post('/agruparPorSemana', cController.agruparPorSemana);
+
+
 /*
 router.post('/searchSemana',(req, res) => {
     res.json('Saving a new task');

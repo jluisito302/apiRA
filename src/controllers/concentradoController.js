@@ -60,11 +60,45 @@ const findProductos = async (req, res) => {
     }
 }
 
+const agruparPorSemana = async (req,res) => {
+    try {
+        const semanasArray=req.body.semanas;
+        
+        const ventasSemana = await concentradovwModel.aggregate([
+            {$match: {
+                "semana":{ $in : semanasArray}
+            }},
+            {$group: { _id: "$semana",
+                numeroRegistros:{$sum: 1}, 
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                }
+            }}
+        ]);
+        res.json(ventasSemana);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."
+        }
+        res.json(response);
+    }
+}
+
 export {
     findAnyEntry,
     createNewEntry,
     findPaginate,
     findSemanas,
     findProductos,
-    findTiendas
+    findTiendas,
+    agruparPorSemana
 }
