@@ -93,6 +93,43 @@ const agruparPorSemana = async (req,res) => {
     }
 }
 
+const agGrupoSemana = async (req,res) => {
+    try {
+        const semanasArray=req.body.semanas;
+        const idgfcArray=req.body.idGFC;
+        
+        const ventasSemanaGrupo = await concentradovwModel.aggregate([
+            {$match: {
+                "idGFC":{$in: idgfcArray},
+                "semana":{ $in : semanasArray}
+            }},
+            {$group: { _id: "$semana",
+                numeroRegistros:{$sum: 1}, 
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                }
+            }},
+            { $sort : { semana : 1} }
+        ]);
+        res.json(ventasSemanaGrupo);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."
+        }
+        res.json(response);
+    }
+}
+
+
 export {
     findAnyEntry,
     createNewEntry,
@@ -100,5 +137,6 @@ export {
     findSemanas,
     findProductos,
     findTiendas,
-    agruparPorSemana
+    agruparPorSemana,
+    agGrupoSemana
 }
