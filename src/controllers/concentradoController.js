@@ -7,12 +7,6 @@ const findAnyEntry = async (req, res) => {
     res.json(tasks);
 }
 
-const createNewEntry = async (req, res) => {
-    //console.log(req.body);
-    const newTask = new concentradovwModel({title: req.body.title, description: req.body.description})
-    newTask.save();
-    res.json(newTask);
-}
 
 const findPaginate = async (req, res) => {
     const entries = await concentradovwModel.find().limit(10);
@@ -60,7 +54,7 @@ const findProductos = async (req, res) => {
     }
 }
 
-const agruparPorSemana = async (req,res) => {
+const agruparSemana = async (req,res) => {
     try {
         const semanasArray=req.body.semanas;
         
@@ -93,7 +87,7 @@ const agruparPorSemana = async (req,res) => {
     }
 }
 
-const agGrupoSemana = async (req,res) => {
+const agrupadoGrupoSemana = async (req,res) => {
     try {
         const semanasArray=req.body.semanas;
         const idgfcArray=req.body.idGFC;
@@ -103,7 +97,7 @@ const agGrupoSemana = async (req,res) => {
                 "idGFC":{$in: idgfcArray},
                 "semana":{ $in : semanasArray}
             }},
-            {$group: { _id: "$semana",
+            {$group: { _id: "$idGFC",
                 numeroRegistros:{$sum: 1}, 
                 ventasImporte: {
                     $sum: "$ventasImporte",
@@ -117,8 +111,7 @@ const agGrupoSemana = async (req,res) => {
                 existenciasUnidades: {
                     $sum: "$existenciasUnidades",
                 }
-            }},
-            { $sort : { semana : 1} }
+            }}
         ]);
         res.json(ventasSemanaGrupo);
     } catch (error) {
@@ -129,14 +122,87 @@ const agGrupoSemana = async (req,res) => {
     }
 }
 
+const agrupadoCadenaSemana = async (req,res) => {
+    try {
+        const semanasArray=req.body.semanas;
+        const idgfcArray=req.body.idGFC;
+        
+        const ventasSemanaGrupo = await concentradovwModel.aggregate([
+            {$match: {
+                "idGFC":{$in: idgfcArray},
+                "semana":{ $in : semanasArray}
+            }},
+            {$group: { _id: "$idGFC",
+                numeroRegistros:{$sum: 1}, 
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                }
+            }}
+        ]);
+        res.json(ventasSemanaGrupo);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."
+        }
+        res.json(response);
+    }
+}
+
+const filtro = async (req,res) => {
+    try {
+        const semanasArray=req.body.semanas;
+        const idgfcArray=req.body.idGFC;
+        const idArrayProductos=req.body.idProducto;
+        
+        const ventasSemanaGrupo = await concentradovwModel.aggregate([
+            {$match: {
+                "idGFC":{$in: idgfcArray},
+                "idProducto":{$in: idArrayProductos},
+                "semana":{ $in : semanasArray}
+            }},
+            {$group: { _id: "$idProducto",
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                },
+                "producto":{$first:"$idProducto"},
+                "semana":{$first:"$semana"},
+            }}
+        ]);
+        res.json(ventasSemanaGrupo);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."
+        }
+        res.json(response);
+    }
+}
 
 export {
     findAnyEntry,
-    createNewEntry,
     findPaginate,
     findSemanas,
     findProductos,
     findTiendas,
-    agruparPorSemana,
-    agGrupoSemana
+    agruparSemana,
+    agrupadoGrupoSemana,
+    agrupadoCadenaSemana,
+    filtro
 }

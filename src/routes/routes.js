@@ -8,20 +8,14 @@ router.get('/retail', (req, res) => {
 })
 
 router.get('/paginado', cController.findPaginate);
-
-router.post('/insert',cController.createNewEntry);
-
 router.post('/semanas', cController.findSemanas);
-
 router.get('/productos', cController.findProductos);
-
 router.get('/tiendas', cController.findTiendas);
+router.post('/agruparSemana', cController.agruparSemana);
+router.post('/agruparGrupo', cController.agrupadoGrupoSemana);
+router.post('/agruparCadena', cController.agrupadoCadenaSemana);
 
-router.post('/agruparPorSemana', cController.agruparPorSemana);
-
-router.post('/agrupadoGrupoSemana', cController.agGrupoSemana);
-
-
+router.post('/filtro', cController.filtro);
 
 /*
 router.post('/searchSemana',(req, res) => {
