@@ -4,7 +4,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.findTiendas = exports.findSemanas = exports.findProductos = exports.findPaginate = exports.findAnyEntry = exports.createNewEntry = void 0;
+exports.marcasUnicas = exports.findTiendas = exports.findSemanas = exports.findProductos = exports.findPaginate = exports.findAnyEntry = exports.filtro = exports.agruparSemana = exports.agrupadoMarca = exports.agrupadoGrupoSemana = exports.agrupadoCadenaSemana = void 0;
 var _concentradovw = _interopRequireDefault(require("../models/concentradovw"));
 var _tiendas = _interopRequireDefault(require("../models/tiendas"));
 var _productos = _interopRequireDefault(require("../models/productos"));
@@ -34,61 +34,37 @@ var findAnyEntry = /*#__PURE__*/function () {
   };
 }();
 exports.findAnyEntry = findAnyEntry;
-var createNewEntry = /*#__PURE__*/function () {
+var findPaginate = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var newTask;
+    var entries;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          //console.log(req.body);
-          newTask = new _concentradovw["default"]({
-            title: req.body.title,
-            description: req.body.description
-          });
-          newTask.save();
-          res.json(newTask);
-        case 3:
+          _context2.next = 2;
+          return _concentradovw["default"].find().limit(10);
+        case 2:
+          entries = _context2.sent;
+          res.json(entries);
+        case 4:
         case "end":
           return _context2.stop();
       }
     }, _callee2);
   }));
-  return function createNewEntry(_x3, _x4) {
+  return function findPaginate(_x3, _x4) {
     return _ref2.apply(this, arguments);
-  };
-}();
-exports.createNewEntry = createNewEntry;
-var findPaginate = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var entries;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
-        case 0:
-          _context3.next = 2;
-          return _concentradovw["default"].find().limit(10);
-        case 2:
-          entries = _context3.sent;
-          res.json(entries);
-        case 4:
-        case "end":
-          return _context3.stop();
-      }
-    }, _callee3);
-  }));
-  return function findPaginate(_x5, _x6) {
-    return _ref3.apply(this, arguments);
   };
 }();
 exports.findPaginate = findPaginate;
 var findSemanas = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
     var semanasArray, querySemanas, response;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          _context4.prev = 0;
+          _context3.prev = 0;
           semanasArray = req.body.semanas;
-          _context4.next = 4;
+          _context3.next = 4;
           return _concentradovw["default"].find({
             "semana": {
               $in: semanasArray
@@ -103,89 +79,489 @@ var findSemanas = /*#__PURE__*/function () {
             existenciasImporte: 1
           }).limit(1000);
         case 4:
-          querySemanas = _context4.sent;
+          querySemanas = _context3.sent;
           res.json(querySemanas);
-          _context4.next = 12;
+          _context3.next = 12;
           break;
         case 8:
-          _context4.prev = 8;
-          _context4.t0 = _context4["catch"](0);
+          _context3.prev = 8;
+          _context3.t0 = _context3["catch"](0);
           response = {
             "message": "Error la data es incorrecta ..."
           };
           res.json(response);
         case 12:
         case "end":
-          return _context4.stop();
+          return _context3.stop();
       }
-    }, _callee4, null, [[0, 8]]);
+    }, _callee3, null, [[0, 8]]);
   }));
-  return function findSemanas(_x7, _x8) {
-    return _ref4.apply(this, arguments);
+  return function findSemanas(_x5, _x6) {
+    return _ref3.apply(this, arguments);
   };
 }();
 exports.findSemanas = findSemanas;
 var findTiendas = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
     var queryTiendas, response;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.prev = 0;
+          _context4.next = 3;
+          return _tiendas["default"].find().limit(50);
+        case 3:
+          queryTiendas = _context4.sent;
+          res.json(queryTiendas);
+          _context4.next = 11;
+          break;
+        case 7:
+          _context4.prev = 7;
+          _context4.t0 = _context4["catch"](0);
+          response = {
+            "message": "Error ...",
+            "error": _context4.t0
+          };
+          res.json(response);
+        case 11:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4, null, [[0, 7]]);
+  }));
+  return function findTiendas(_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+exports.findTiendas = findTiendas;
+var findProductos = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var queryProductos, response;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
           _context5.prev = 0;
           _context5.next = 3;
-          return _tiendas["default"].find().limit(50);
+          return _productos["default"].find().limit(50);
         case 3:
-          queryTiendas = _context5.sent;
-          res.json(queryTiendas);
-          _context5.next = 11;
+          queryProductos = _context5.sent;
+          res.json(queryProductos);
+          _context5.next = 12;
           break;
         case 7:
           _context5.prev = 7;
           _context5.t0 = _context5["catch"](0);
+          console.log(_context5.t0);
           response = {
             "message": "Error ..."
           };
           res.json(response);
-        case 11:
+        case 12:
         case "end":
           return _context5.stop();
       }
     }, _callee5, null, [[0, 7]]);
   }));
-  return function findTiendas(_x9, _x10) {
+  return function findProductos(_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
-exports.findTiendas = findTiendas;
-var findProductos = /*#__PURE__*/function () {
+exports.findProductos = findProductos;
+var agruparSemana = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var queryProductos, response;
+    var semanasArray, ventasSemana, response;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
           _context6.prev = 0;
-          _context6.next = 3;
-          return _productos["default"].find().limit(50);
-        case 3:
-          queryProductos = _context6.sent;
-          res.json(queryProductos);
-          _context6.next = 11;
+          semanasArray = req.body.semanas;
+          _context6.next = 4;
+          return _concentradovw["default"].aggregate([{
+            $match: {
+              "semana": {
+                $in: semanasArray
+              }
+            }
+          }, {
+            $group: {
+              _id: "$semana",
+              numeroRegistros: {
+                $sum: 1
+              },
+              ventasImporte: {
+                $sum: "$ventasImporte"
+              },
+              ventasUnidades: {
+                $sum: "$ventasUnidades"
+              },
+              existenciasImporte: {
+                $sum: "$existenciasImporte"
+              },
+              existenciasUnidades: {
+                $sum: "$existenciasUnidades"
+              }
+            }
+          }]);
+        case 4:
+          ventasSemana = _context6.sent;
+          res.json(ventasSemana);
+          _context6.next = 12;
           break;
-        case 7:
-          _context6.prev = 7;
+        case 8:
+          _context6.prev = 8;
           _context6.t0 = _context6["catch"](0);
           response = {
-            "message": "Error ..."
+            "message": "Error encontrado..."
+          };
+          res.json(response);
+        case 12:
+        case "end":
+          return _context6.stop();
+      }
+    }, _callee6, null, [[0, 8]]);
+  }));
+  return function agruparSemana(_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+exports.agruparSemana = agruparSemana;
+var agrupadoGrupoSemana = /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+    var semanasArray, idgfcArray, ventasSemanaGrupo, response;
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) switch (_context7.prev = _context7.next) {
+        case 0:
+          _context7.prev = 0;
+          semanasArray = req.body.semanas;
+          idgfcArray = req.body.idGFC;
+          _context7.next = 5;
+          return _concentradovw["default"].aggregate([{
+            $match: {
+              "idGFC": {
+                $in: idgfcArray
+              },
+              "semana": {
+                $in: semanasArray
+              }
+            }
+          }, {
+            $group: {
+              _id: "$idGFC",
+              numeroRegistros: {
+                $sum: 1
+              },
+              ventasImporte: {
+                $sum: "$ventasImporte"
+              },
+              ventasUnidades: {
+                $sum: "$ventasUnidades"
+              },
+              existenciasImporte: {
+                $sum: "$existenciasImporte"
+              },
+              existenciasUnidades: {
+                $sum: "$existenciasUnidades"
+              }
+            }
+          }]);
+        case 5:
+          ventasSemanaGrupo = _context7.sent;
+          res.json(ventasSemanaGrupo);
+          _context7.next = 13;
+          break;
+        case 9:
+          _context7.prev = 9;
+          _context7.t0 = _context7["catch"](0);
+          response = {
+            "message": "Error encontrado..."
+          };
+          res.json(response);
+        case 13:
+        case "end":
+          return _context7.stop();
+      }
+    }, _callee7, null, [[0, 9]]);
+  }));
+  return function agrupadoGrupoSemana(_x13, _x14) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+exports.agrupadoGrupoSemana = agrupadoGrupoSemana;
+var agrupadoCadenaSemana = /*#__PURE__*/function () {
+  var _ref8 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+    var semanasArray, idgfcArray, ventasSemanaGrupo, response;
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
+        case 0:
+          _context8.prev = 0;
+          semanasArray = req.body.semanas;
+          idgfcArray = req.body.idGFC;
+          _context8.next = 5;
+          return _concentradovw["default"].aggregate([{
+            $match: {
+              "idGFC": {
+                $in: idgfcArray
+              },
+              "semana": {
+                $in: semanasArray
+              }
+            }
+          }, {
+            $group: {
+              _id: "$idGFC",
+              numeroRegistros: {
+                $sum: 1
+              },
+              ventasImporte: {
+                $sum: "$ventasImporte"
+              },
+              ventasUnidades: {
+                $sum: "$ventasUnidades"
+              },
+              existenciasImporte: {
+                $sum: "$existenciasImporte"
+              },
+              existenciasUnidades: {
+                $sum: "$existenciasUnidades"
+              }
+            }
+          }]);
+        case 5:
+          ventasSemanaGrupo = _context8.sent;
+          res.json(ventasSemanaGrupo);
+          _context8.next = 13;
+          break;
+        case 9:
+          _context8.prev = 9;
+          _context8.t0 = _context8["catch"](0);
+          response = {
+            "message": "Error encontrado..."
+          };
+          res.json(response);
+        case 13:
+        case "end":
+          return _context8.stop();
+      }
+    }, _callee8, null, [[0, 9]]);
+  }));
+  return function agrupadoCadenaSemana(_x15, _x16) {
+    return _ref8.apply(this, arguments);
+  };
+}();
+exports.agrupadoCadenaSemana = agrupadoCadenaSemana;
+var agrupadoMarca = /*#__PURE__*/function () {
+  var _ref9 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+    var semanasArray, groupMarcas, response;
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+      while (1) switch (_context9.prev = _context9.next) {
+        case 0:
+          _context9.prev = 0;
+          semanasArray = req.body.semanas;
+          _context9.next = 4;
+          return _concentradovw["default"].aggregate([{
+            $match: {
+              "semana": {
+                $in: semanasArray
+              }
+            }
+          }, {
+            $group: {
+              _id: "$propet",
+              numeroRegistros: {
+                $sum: 1
+              },
+              ventasImporte: {
+                $sum: "$ventasImporte"
+              },
+              ventasUnidades: {
+                $sum: "$ventasUnidades"
+              },
+              existenciasImporte: {
+                $sum: "$existenciasImporte"
+              },
+              existenciasUnidades: {
+                $sum: "$existenciasUnidades"
+              }
+            }
+          }]);
+        case 4:
+          groupMarcas = _context9.sent;
+          res.json(groupMarcas);
+          _context9.next = 12;
+          break;
+        case 8:
+          _context9.prev = 8;
+          _context9.t0 = _context9["catch"](0);
+          response = {
+            "message": "Error encontrado..."
+          };
+          res.json(response);
+        case 12:
+        case "end":
+          return _context9.stop();
+      }
+    }, _callee9, null, [[0, 8]]);
+  }));
+  return function agrupadoMarca(_x17, _x18) {
+    return _ref9.apply(this, arguments);
+  };
+}();
+exports.agrupadoMarca = agrupadoMarca;
+var marcasUnicas = /*#__PURE__*/function () {
+  var _ref10 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res) {
+    var marcas, response;
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
+        case 0:
+          _context10.prev = 0;
+          _context10.next = 3;
+          return _productos["default"].distinct("marca");
+        case 3:
+          marcas = _context10.sent;
+          res.json(marcas);
+          _context10.next = 11;
+          break;
+        case 7:
+          _context10.prev = 7;
+          _context10.t0 = _context10["catch"](0);
+          response = {
+            "message": "Error encontrado... " + _context10.t0
           };
           res.json(response);
         case 11:
         case "end":
-          return _context6.stop();
+          return _context10.stop();
       }
-    }, _callee6, null, [[0, 7]]);
+    }, _callee10, null, [[0, 7]]);
   }));
-  return function findProductos(_x11, _x12) {
-    return _ref6.apply(this, arguments);
+  return function marcasUnicas(_x19, _x20) {
+    return _ref10.apply(this, arguments);
   };
 }();
-exports.findProductos = findProductos;
+exports.marcasUnicas = marcasUnicas;
+var ventasTop = /*#__PURE__*/function () {
+  var _ref11 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res) {
+    var semanasArray, groupMarcas, response;
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+      while (1) switch (_context11.prev = _context11.next) {
+        case 0:
+          _context11.prev = 0;
+          semanasArray = req.body.semanas;
+          _context11.next = 4;
+          return _concentradovw["default"].aggregate([{
+            $match: {
+              "semana": {
+                $in: semanasArray
+              }
+            }
+          }, {
+            $group: {
+              _id: "$ventasUnidades",
+              numeroRegistros: {
+                $sum: 1
+              },
+              ventasImporte: {
+                $sum: "$ventasImporte"
+              },
+              ventasUnidades: {
+                $sum: "$ventasUnidades"
+              },
+              existenciasImporte: {
+                $sum: "$existenciasImporte"
+              },
+              existenciasUnidades: {
+                $sum: "$existenciasUnidades"
+              }
+            }
+          }]);
+        case 4:
+          groupMarcas = _context11.sent;
+          res.json(groupMarcas);
+          _context11.next = 12;
+          break;
+        case 8:
+          _context11.prev = 8;
+          _context11.t0 = _context11["catch"](0);
+          response = {
+            "message": "Error encontrado... " + _context11.t0
+          };
+          res.json(response);
+        case 12:
+        case "end":
+          return _context11.stop();
+      }
+    }, _callee11, null, [[0, 8]]);
+  }));
+  return function ventasTop(_x21, _x22) {
+    return _ref11.apply(this, arguments);
+  };
+}();
+var filtro = /*#__PURE__*/function () {
+  var _ref12 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res) {
+    var semanasArray, idgfcArray, idArrayProductos, ventasSemanaGrupo, response;
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+      while (1) switch (_context12.prev = _context12.next) {
+        case 0:
+          _context12.prev = 0;
+          semanasArray = req.body.semanas;
+          idgfcArray = req.body.idGFC;
+          idArrayProductos = req.body.idProducto;
+          _context12.next = 6;
+          return _concentradovw["default"].aggregate([{
+            $match: {
+              "idGFC": {
+                $in: idgfcArray
+              },
+              "idProducto": {
+                $in: idArrayProductos
+              },
+              "semana": {
+                $in: semanasArray
+              }
+            }
+          }, {
+            $group: {
+              _id: "$idProducto",
+              ventasImporte: {
+                $sum: "$ventasImporte"
+              },
+              ventasUnidades: {
+                $sum: "$ventasUnidades"
+              },
+              existenciasImporte: {
+                $sum: "$existenciasImporte"
+              },
+              existenciasUnidades: {
+                $sum: "$existenciasUnidades"
+              },
+              "producto": {
+                $first: "$idProducto"
+              },
+              "semana": {
+                $first: "$semana"
+              }
+            }
+          }]);
+        case 6:
+          ventasSemanaGrupo = _context12.sent;
+          res.json(ventasSemanaGrupo);
+          _context12.next = 14;
+          break;
+        case 10:
+          _context12.prev = 10;
+          _context12.t0 = _context12["catch"](0);
+          response = {
+            "message": "Error encontrado..."
+          };
+          res.json(response);
+        case 14:
+        case "end":
+          return _context12.stop();
+      }
+    }, _callee12, null, [[0, 10]]);
+  }));
+  return function filtro(_x23, _x24) {
+    return _ref12.apply(this, arguments);
+  };
+}();
+exports.filtro = filtro;

@@ -48,6 +48,7 @@ const findProductos = async (req, res) => {
         const queryProductos = await modelProductos.find().limit(50);
         res.json(queryProductos);
     } catch (error) {
+        console.log(error);
         const response={
             "message": "Error ..."
         }

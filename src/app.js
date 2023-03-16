@@ -1,12 +1,12 @@
+import config from "./config";
 import express from "express";
 import Routes from "./routes/routes.js";
 import cors from "cors";
-
 const app = express();
 
 
 //PORT
-app.set('port',process.env.PORT || 3000);
+app.set('port',config.apiPort);
 
 //MIDDLEWARE
 const corsOptions={};
