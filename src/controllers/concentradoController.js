@@ -36,7 +36,8 @@ const findTiendas = async (req, res) => {
         res.json(queryTiendas);
     } catch (error) {
         const response={
-            "message": "Error ..."
+            "message": "Error ...",
+            "error": error
         }
         res.json(response);
     }
