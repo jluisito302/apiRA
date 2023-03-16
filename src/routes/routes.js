@@ -16,6 +16,9 @@ router.post('/agruparGrupo', cController.agrupadoGrupoSemana);
 router.post('/agruparCadena', cController.agrupadoCadenaSemana);
 //router.get('/marcas', cController.marcasUnicas);
 router.post('/agrupadoMarca', cController.agrupadoMarca);
+router.post('/agrupadoVentasXProducto', cController.agVentasXProducto);
+router.post('/ventasTop', cController.ventasTop);
+
 
 router.post('/filtro', cController.filtro);
 

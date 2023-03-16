@@ -64,7 +64,6 @@ const agruparSemana = async (req,res) => {
                 "semana":{ $in : semanasArray}
             }},
             {$group: { _id: "$semana",
-                numeroRegistros:{$sum: 1}, 
                 ventasImporte: {
                     $sum: "$ventasImporte",
                 },
@@ -167,7 +166,6 @@ const agrupadoMarca = async (req,res) => {
                 "semana":{ $in : semanasArray}
             }},
             {$group: { _id: "$propet",
-                numeroRegistros:{$sum: 1}, 
                 ventasImporte: {
                     $sum: "$ventasImporte",
                 },
@@ -211,8 +209,42 @@ const ventasTop = async (req,res) => {
             {$match: {
                 "semana":{ $in : semanasArray}
             }},
-            {$group: { _id: "$ventasUnidades",
-                numeroRegistros:{$sum: 1}, 
+            {$group: { _id: "$idProducto",
+                topVentasUnidades: {
+                    $sum: "$ventasUnidades",
+                },ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                }
+            }},
+            {$sort: {topVentasUnidades: -1}},
+            {$limit : 25}
+        ]);
+        res.json(groupMarcas);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const agVentasXProducto = async (req,res) => {
+    try {
+        const semanasArray=req.body.semanas;
+        const idProductoArray=req.body.idProductos;
+        
+        const ventasSemanaGrupo = await concentradovwModel.aggregate([
+            {$match: {
+                "idProducto":{$in: idProductoArray},
+                "semana":{ $in : semanasArray}
+            }},
+            {$group: { _id: "$idProducto",
                 ventasImporte: {
                     $sum: "$ventasImporte",
                 },
@@ -227,10 +259,10 @@ const ventasTop = async (req,res) => {
                 }
             }}
         ]);
-        res.json(groupMarcas);
+        res.json(ventasSemanaGrupo);
     } catch (error) {
         const response={
-            "message": "Error encontrado... "+error
+            "message": "Error encontrado "+error
         }
         res.json(response);
     }
@@ -285,5 +317,7 @@ export {
     agrupadoCadenaSemana,
     marcasUnicas,
     agrupadoMarca,
+    ventasTop,
+    agVentasXProducto,
     filtro
 }
