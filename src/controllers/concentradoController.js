@@ -157,6 +157,84 @@ const agrupadoCadenaSemana = async (req,res) => {
     }
 }
 
+const agrupadoMarca = async (req,res) => {
+    try {
+        const semanasArray=req.body.semanas;
+        
+        const groupMarcas = await concentradovwModel.aggregate([
+            {$match: {
+                "semana":{ $in : semanasArray}
+            }},
+            {$group: { _id: "$propet",
+                numeroRegistros:{$sum: 1}, 
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                }
+            }}
+        ]);
+        res.json(groupMarcas);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."
+        }
+        res.json(response);
+    }
+}
+
+const marcasUnicas = async (req,res) => {
+    try {
+        const marcas = await modelProductos.distinct("marca");
+        res.json(marcas);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const ventasTop = async (req,res) => {
+    try {
+        const semanasArray=req.body.semanas;
+        
+        const groupMarcas = await concentradovwModel.aggregate([
+            {$match: {
+                "semana":{ $in : semanasArray}
+            }},
+            {$group: { _id: "$ventasUnidades",
+                numeroRegistros:{$sum: 1}, 
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                }
+            }}
+        ]);
+        res.json(groupMarcas);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
 const filtro = async (req,res) => {
     try {
         const semanasArray=req.body.semanas;
@@ -204,5 +282,7 @@ export {
     agruparSemana,
     agrupadoGrupoSemana,
     agrupadoCadenaSemana,
+    marcasUnicas,
+    agrupadoMarca,
     filtro
 }

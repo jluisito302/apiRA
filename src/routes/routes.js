@@ -14,12 +14,10 @@ router.get('/tiendas', cController.findTiendas);
 router.post('/agruparSemana', cController.agruparSemana);
 router.post('/agruparGrupo', cController.agrupadoGrupoSemana);
 router.post('/agruparCadena', cController.agrupadoCadenaSemana);
+//router.get('/marcas', cController.marcasUnicas);
+router.post('/agrupadoMarca', cController.agrupadoMarca);
 
 router.post('/filtro', cController.filtro);
 
-/*
-router.post('/searchSemana',(req, res) => {
-    res.json('Saving a new task');
-})*/
 
 export default router;
