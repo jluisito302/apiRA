@@ -12,12 +12,20 @@ _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
   return _regeneratorRuntime().wrap(function _callee$(_context) {
     while (1) switch (_context.prev = _context.next) {
       case 0:
-        _context.next = 2;
-        return _mongoose["default"].connect(_config["default"].mongodbURL);
-      case 2:
+        console.log(process.env.MONGODB_URI);
+        console.log(process.env.MONGODB_USER);
+        console.log(process.env.MONGODB_PASS);
+        _context.next = 5;
+        return _mongoose["default"].connect(_config["default"].mongodbURL, {
+          useNewUrlParser: true,
+          user: _config["default"].mongodbUser,
+          pass: _config["default"].mongodbPass,
+          keepAlive: true
+        });
+      case 5:
         db = _context.sent;
         console.log('Conexion Mongodb', db.connection.name);
-      case 4:
+      case 7:
       case "end":
         return _context.stop();
     }

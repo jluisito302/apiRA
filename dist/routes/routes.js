@@ -14,14 +14,14 @@ router.get('/retail', function (req, res) {
   res.send('Retail RA');
 });
 router.get('/paginado', cController.findPaginate);
-router.post('/insert', cController.createNewEntry);
 router.post('/semanas', cController.findSemanas);
 router.get('/productos', cController.findProductos);
 router.get('/tiendas', cController.findTiendas);
-
-/*
-router.post('/searchSemana',(req, res) => {
-    res.json('Saving a new task');
-})*/
+router.post('/agruparSemana', cController.agruparSemana);
+router.post('/agruparGrupo', cController.agrupadoGrupoSemana);
+router.post('/agruparCadena', cController.agrupadoCadenaSemana);
+//router.get('/marcas', cController.marcasUnicas);
+router.post('/agrupadoMarca', cController.agrupadoMarca);
+router.post('/filtro', cController.filtro);
 var _default = router;
 exports["default"] = _default;
