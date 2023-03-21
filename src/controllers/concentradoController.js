@@ -76,8 +76,11 @@ const agruparSemana = async (req,res) => {
                 },
                 existenciasUnidades: {
                     $sum: "$existenciasUnidades",
-                }
-            }}
+                },
+                "semana":{$first:"$semana"},
+
+            }},
+            {$sort: {semana: -1}}
         ]);
         res.json(ventasSemana);
     } catch (error) {
