@@ -310,6 +310,92 @@ const filtro = async (req,res) => {
     }
 }
 
+const fabricante = async (req,res) => {
+    try {
+        const fabricante = await modelProductos.distinct("fabricante");
+        res.json(fabricante);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const submarca = async (req,res) => {
+    try {
+        const submarca = await modelProductos.distinct("submarca");
+        res.json(submarca);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const categorias = async (req,res) => {
+    try {
+        const categoria = await modelProductos.distinct("categoria");
+        res.json(categoria);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const subcategoria = async (req,res) => {
+    try {
+        const subcategoria = await modelProductos.distinct("subcatego");
+        res.json(subcategoria);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const segmento = async (req,res) => {
+    try {
+        const segmento = await modelProductos.distinct("segmento");
+        res.json(segmento);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const presentacion = async (req,res) => {
+    try {
+        const presentacion = await modelProductos.distinct("presentacion");
+        res.json(presentacion);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const capacidad = async (req,res) => {
+    try {
+        const capacidad = await modelProductos.distinct("capacidad");
+        res.json(capacidad);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+
+
 export {
     findAnyEntry,
     findPaginate,
@@ -323,5 +409,11 @@ export {
     agrupadoMarca,
     ventasTop,
     agVentasXProducto,
-    filtro
+    fabricante,
+    submarca,
+    categorias,
+    subcategoria,
+    segmento,
+    presentacion,
+    capacidad
 }
