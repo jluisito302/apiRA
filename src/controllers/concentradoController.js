@@ -1,6 +1,7 @@
 import concentradovwModel from '../models/concentradovw';
 import modelTiendas from '../models/tiendas';
 import modelProductos from '../models/productos';
+import modelGfc from '../models/gfc';
 
 const findAnyEntry = async (req, res) => {
     const tasks = await concentradovwModel.find();
@@ -274,37 +275,38 @@ const agVentasXProducto = async (req,res) => {
 
 const filtro = async (req,res) => {
     try {
-        const semanasArray=req.body.semanas;
-        const idgfcArray=req.body.idGFC;
-        const idArrayProductos=req.body.idProducto;
-        
+        //const arraySemanas=req.body.semanas;
+        //const arrayIdProductos=req.body.idProductos;
+
         const ventasSemanaGrupo = await concentradovwModel.aggregate([
-            {$match: {
-                "idGFC":{$in: idgfcArray},
-                "idProducto":{$in: idArrayProductos},
-                "semana":{ $in : semanasArray}
-            }},
-            {$group: { _id: "$idProducto",
-                ventasImporte: {
-                    $sum: "$ventasImporte",
-                },
-                ventasUnidades: {
-                    $sum: "$ventasUnidades",
-                },
-                existenciasImporte: {
-                    $sum: "$existenciasImporte",
-                },
-                existenciasUnidades: {
-                    $sum: "$existenciasUnidades",
-                },
-                "producto":{$first:"$idProducto"},
-                "semana":{$first:"$semana"},
-            }}
+            {
+                $match: {
+                "semana":{ $in : [202204]},
+                "idProducto":{ $in: [9181,9195,9195,9200] }
+                }
+            },
+            {
+                $group: { _id: "$semana",
+                    ventasImporte: {
+                        $sum: "$ventasImporte",
+                    },
+                    ventasUnidades: {
+                        $sum: "$ventasUnidades",
+                    },
+                    existenciasImporte: {
+                        $sum: "$existenciasImporte",
+                    },
+                    existenciasUnidades: {
+                        $sum: "$existenciasUnidades",
+                    }
+                    
+                }
+            }
         ]);
         res.json(ventasSemanaGrupo);
     } catch (error) {
         const response={
-            "message": "Error encontrado..."
+            "message": "Error encontrado..."+error
         }
         res.json(response);
     }
@@ -394,6 +396,102 @@ const capacidad = async (req,res) => {
     }
 }
 
+const buscarXGrupoXSemana = async (req,res) => {
+    try {
+        const semanasArray=req.body.semanas;
+        const idgfcArray=req.body.idgfcs;
+        const ventasSemana = await concentradovwModel.aggregate([
+            {$match: {
+                "semana":{ $in : semanasArray},
+                "idGFC":{$in: idgfcArray},
+            }},
+            {$group: { _id: "$semana",
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                },
+                "semana":{$first:"$semana"},
+
+            }},
+            {$sort: {semana: -1}}
+        ]);
+        res.json(ventasSemana);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."
+        }
+        res.json(response);
+    }
+}
+
+const searchCategoria = async (req,res) => {
+    try {
+        const categoriaArray=req.body.categoria;
+        const grupoCategoria = await modelProductos.aggregate([
+            {$match: {categoria: categoriaArray }},
+            {
+                $group: { 
+                    _id: "$id",
+                    "producto": { $first: "$id" },
+                    
+                }
+
+            }
+        ]);
+        res.json(grupoCategoria);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const searchGrupo = async (req,res) => {
+    try {
+        const grupoArray=req.body.grupo;
+        const grupoCategoria = await modelGfc.aggregate([
+            {$match: {grupo: grupoArray }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idProducto": { "$first": "$id" },
+                    "categoria":{$first:"$grupo"}
+                }
+            }
+        ]);
+        
+        res.json(grupoCategoria);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+/*
+const lineTox = async (req,res) => {
+    try {
+        const linea = await modelProductos.distinct("lineTox");
+        res.json(linea);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}*/
+
+
 
 
 export {
@@ -415,5 +513,9 @@ export {
     subcategoria,
     segmento,
     presentacion,
-    capacidad
+    capacidad,
+    filtro,
+    searchCategoria,
+    searchGrupo,
+    buscarXGrupoXSemana
 }

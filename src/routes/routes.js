@@ -26,9 +26,18 @@ router.get('/categorias', cController.categorias);
 router.get('/subcategorias', cController.subcategoria);
 router.get('/segmento', cController.segmento);
 router.get('/presentacion', cController.presentacion);
-router.get('/capacidad', cController.presentacion);
+router.get('/capacidad', cController.capacidad);
+
+//router.get('/linea', cController.lineTox);
 
 
-//router.post('/filtro', cController.filtro);
+
+router.post('/filtros', cController.filtro);
+router.post('/searchCategoria', cController.searchCategoria);
+router.post('/searchGrupo', cController.searchGrupo);
+router.post('/buscarXGrupoXSemana', cController.buscarXGrupoXSemana);
+
+
+
 
 export default router;
