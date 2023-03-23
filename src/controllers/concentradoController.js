@@ -463,7 +463,7 @@ const searchGrupo = async (req,res) => {
             {
                 $group: {
                     _id: "$id",
-                    "idProducto": { "$first": "$id" },
+                    "idGFC": { "$first": "$id" },
                     "categoria":{$first:"$grupo"}
                 }
             }
