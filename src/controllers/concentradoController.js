@@ -434,21 +434,56 @@ const buscarXGrupoXSemana = async (req,res) => {
     }
 }
 
-const searchCategoria = async (req,res) => {
+const buscarXCadenaXSemana = async (req,res) => {
     try {
-        const categoriaArray=req.body.categoria;
-        const grupoCategoria = await modelProductos.aggregate([
-            {$match: {categoria: categoriaArray }},
-            {
-                $group: { 
-                    _id: "$id",
-                    "producto": { $first: "$id" },
-                    
-                }
+        const semanasArray=req.body.semanas;
+        const idgfcArray=req.body.idgfcs;
+        const ventasSemana = await concentradovwModel.aggregate([
+            {$match: {
+                "semana":{ $in : semanasArray},
+                "idGFC":{$in: idgfcArray},
+            }},
+            {$group: { _id: "$idGFC",
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                },
+                "idGFC":{$first:"$idGFC"},
 
+            }},
+            {$sort: {semana: -1}}
+        ]);
+        res.json(ventasSemana);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."
+        }
+        res.json(response);
+    }
+}
+
+const searchCadena = async (req,res) => {
+    try {
+        const cadenaArray=req.body.cadena;
+        const cadena = await modelGfc.aggregate([
+            {$match: {cadena: cadenaArray }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idGFC": { "$first": "$id" },
+                    "cadena":{$first:"$cadena"}
+                }
             }
         ]);
-        res.json(grupoCategoria);
+        res.json(cadena);
     } catch (error) {
         const response={
             "message": "Error encontrado... "+error
@@ -517,7 +552,7 @@ export {
     presentacion,
     capacidad,
     filtro,
-    searchCategoria,
+    searchCadena,
     searchGrupo,
     buscarXGrupoXSemana
 }

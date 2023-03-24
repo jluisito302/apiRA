@@ -33,7 +33,7 @@ router.get('/capacidad', cController.capacidad);
 
 
 router.post('/filtros', cController.filtro);
-router.post('/searchCategoria', cController.searchCategoria);
+router.post('/searchCadena', cController.searchCadena);
 router.post('/searchGrupo', cController.searchGrupo);
 router.post('/buscarXGrupoXSemana', cController.buscarXGrupoXSemana);
 
