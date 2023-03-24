@@ -277,35 +277,34 @@ const agVentasXProducto = async (req,res) => {
 
 const filtro = async (req,res) => {
     try {
-        //const arraySemanas=req.body.semanas;
-        //const arrayIdProductos=req.body.idProductos;
-
-        const ventasSemanaGrupo = await concentradovwModel.aggregate([
-            {
-                $match: {
-                "semana":{ $in : [202204]},
-                "idProducto":{ $in: [9181,9195,9195,9200] }
-                }
-            },
-            {
-                $group: { _id: "$semana",
-                    ventasImporte: {
-                        $sum: "$ventasImporte",
-                    },
-                    ventasUnidades: {
-                        $sum: "$ventasUnidades",
-                    },
-                    existenciasImporte: {
-                        $sum: "$existenciasImporte",
-                    },
-                    existenciasUnidades: {
-                        $sum: "$existenciasUnidades",
+        let semanas=req.body.semanas;
+        let idProductos=req.body.arrayIdProductos;
+        if(idProductos != null){
+            const allSemanas = await concentradovwModel.aggregate([
+                {
+                    $match: {
+                        "semana":{$in: semanas},
+                        "idProducto": {$in: idProductos}
                     }
-                    
                 }
-            }
-        ]);
-        res.json(ventasSemanaGrupo);
+            ]);
+            
+        res.json(allSemanas);
+        }else{
+            const allSemanas = await concentradovwModel.aggregate([
+                {
+                    $match: {
+                        "semana":{$in: semanas}
+                    }
+                },
+                { $limit : 5 }
+            ]);
+
+            
+        res.json(allSemanas);
+        }
+        
+        
     } catch (error) {
         const response={
             "message": "Error encontrado..."+error
