@@ -102,21 +102,23 @@ const agrupadoGrupoSemana = async (req,res) => {
                 "idGFC":{$in: idgfcArray},
                 "semana":{ $in : semanasArray}
             }},
-            {$group: { _id: "$idGFC",
-                numeroRegistros:{$sum: 1}, 
-                ventasImporte: {
-                    $sum: "$ventasImporte",
-                },
-                ventasUnidades: {
-                    $sum: "$ventasUnidades",
-                },
-                existenciasImporte: {
-                    $sum: "$existenciasImporte",
-                },
-                existenciasUnidades: {
-                    $sum: "$existenciasUnidades",
+            {
+                $group: { _id: "$idGFC",
+                    numeroRegistros:{$sum: 1}, 
+                    ventasImporte: {
+                        $sum: "$ventasImporte",
+                    },
+                    ventasUnidades: {
+                        $sum: "$ventasUnidades",
+                    },
+                    existenciasImporte: {
+                        $sum: "$existenciasImporte",
+                    },
+                    existenciasUnidades: {
+                        $sum: "$existenciasUnidades",
+                    }
                 }
-            }}
+            }
         ]);
         res.json(ventasSemanaGrupo);
     } catch (error) {
@@ -405,7 +407,7 @@ const buscarXGrupoXSemana = async (req,res) => {
                 "semana":{ $in : semanasArray},
                 "idGFC":{$in: idgfcArray},
             }},
-            {$group: { _id: "$semana",
+            {$group: { _id: "$idGFC",
                 ventasImporte: {
                     $sum: "$ventasImporte",
                 },
@@ -418,7 +420,7 @@ const buscarXGrupoXSemana = async (req,res) => {
                 existenciasUnidades: {
                     $sum: "$existenciasUnidades",
                 },
-                "semana":{$first:"$semana"},
+                "idGFC":{$first:"$idGFC"},
 
             }},
             {$sort: {semana: -1}}
