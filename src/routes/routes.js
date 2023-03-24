@@ -36,7 +36,8 @@ router.post('/filtros', cController.filtro);
 router.post('/searchCadena', cController.searchCadena);
 router.post('/searchGrupo', cController.searchGrupo);
 router.post('/buscarXGrupoXSemana', cController.buscarXGrupoXSemana);
-
+//RUTAS PARA FILTROS DE PRODUCTOS
+router.post('/idsProductosXMarca', cController.idsProductosXMarca);
 
 
 

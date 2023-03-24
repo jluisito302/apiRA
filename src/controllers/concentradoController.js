@@ -528,6 +528,28 @@ const lineTox = async (req,res) => {
     }
 }*/
 
+//FILTROS SOBRE PRODUCTOS
+const idsProductosXMarca = async (req,res) => {
+    try {
+        const arrayMarca=req.body.marca;
+        const grupoCategoria = await modelProductos.aggregate([
+            {$match: {marca: arrayMarca }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idProducto": { $first: "$id" }
+                }
+            }
+        ]);
+        
+        res.json(grupoCategoria);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
 
 
 
@@ -554,5 +576,6 @@ export {
     filtro,
     searchCadena,
     searchGrupo,
-    buscarXGrupoXSemana
+    buscarXGrupoXSemana,
+    idsProductosXMarca
 }
