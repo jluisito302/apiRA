@@ -285,8 +285,26 @@ const filtro = async (req,res) => {
                     $match: {
                         "semana":{$in: semanas},
                         "idProducto": {$in: idProductos}
+                    },
+                },
+                {
+                    $group: { _id: "$semana",
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "semana":{$first:"$semana"},
                     }
-                }
+                },
+                {$sort: {semana: -1}}
             ]);
             
         res.json(allSemanas);
@@ -297,7 +315,24 @@ const filtro = async (req,res) => {
                         "semana":{$in: semanas}
                     }
                 },
-                { $limit : 5 }
+                {
+                    $group: { _id: "$semana",
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "semana":{$first:"$semana"},
+                    }
+                },
+                {$sort: {semana: -1}}
             ]);
 
             
