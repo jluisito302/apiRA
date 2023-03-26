@@ -585,6 +585,162 @@ const idsProductosXMarca = async (req,res) => {
     }
 }
 
+const idsProductosXCategoria = async (req,res) => {
+    try {
+        const stringCategoria=req.body.categoria;
+        const productosCategoria = await modelProductos.aggregate([
+            {$match: {categoria: stringCategoria }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idProducto": { $first: "$id" }
+                }
+            }
+        ]);
+        
+        res.json(productosCategoria);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const idsProductosXFabricante = async (req,res) => {
+    try {
+        const stringFabricante=req.body.fabricante;
+        const productosFabricante = await modelProductos.aggregate([
+            {$match: {fabricante: stringFabricante }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idProducto": { $first: "$id" }
+                }
+            }
+        ]);
+        
+        res.json(productosFabricante);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const idsProductosXSubcategoria = async (req,res) => {
+    try {
+        const stringSubcategoria=req.body.subcategoria;
+        const productosSubcategoria = await modelProductos.aggregate([
+            {$match: {subcatego: stringSubcategoria }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idProducto": { $first: "$id" }
+                }
+            }
+        ]);
+        
+        res.json(productosSubcategoria);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const idsProductosXCapacidad = async (req,res) => {
+    try {
+        const stringCapacidad=req.body.capacidad;
+        const productosCapacidad = await modelProductos.aggregate([
+            {$match: {capacidad: stringCapacidad }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idProducto": { $first: "$id" }
+                }
+            }
+        ]);
+        
+        res.json(productosCapacidad);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const idsProductosXPresentacion = async (req,res) => {
+    try {
+        const stringPresentacion=req.body.capacidad;
+        const productosPresentacion = await modelProductos.aggregate([
+            {$match: {presentacion: stringPresentacion }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idProducto": { $first: "$id" }
+                }
+            }
+        ]);
+        
+        res.json(productosPresentacion);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const idsProductosXSegmento = async (req,res) => {
+    try {
+        const stringSegmento=req.body.capacidad;
+        const productosSegmento = await modelProductos.aggregate([
+            {$match: {segmento: stringSegmento }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idProducto": { $first: "$id" }
+                }
+            }
+        ]);
+        
+        res.json(productosSegmento);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const idsProductosXSubmarca = async (req,res) => {
+    try {
+        const stringSubmarca=req.body.capacidad;
+        const productosSubmarca = await modelProductos.aggregate([
+            {$match: {submarca: stringSubmarca }},
+            {
+                $group: {
+                    _id: "$id",
+                    "idProducto": { $first: "$id" }
+                }
+            }
+        ]);
+        
+        res.json(productosSubmarca);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+
+
 
 
 export {
@@ -611,5 +767,12 @@ export {
     searchCadena,
     searchGrupo,
     buscarXGrupoXSemana,
-    idsProductosXMarca
+    idsProductosXMarca,
+    idsProductosXCategoria,
+    idsProductosXFabricante,
+    idsProductosXSubcategoria,
+    idsProductosXCapacidad,
+    idsProductosXPresentacion,
+    idsProductosXSegmento,
+    idsProductosXSubmarca,
 }

@@ -38,7 +38,13 @@ router.post('/searchGrupo', cController.searchGrupo);
 router.post('/buscarXGrupoXSemana', cController.buscarXGrupoXSemana);
 //RUTAS PARA FILTROS DE PRODUCTOS
 router.post('/idsProductosXMarca', cController.idsProductosXMarca);
-
+router.post('/idsProductosXCategoria', cController.idsProductosXCategoria);
+router.post('/idsProductosXFabricante', cController.idsProductosXFabricante);
+router.post('/idsProductosXSubcategoria', cController.idsProductosXSubcategoria);
+router.post('/idsProductosXCapacidad', cController.idsProductosXCapacidad);
+router.post('/idsProductosXPresentacion', cController.idsProductosXPresentacion);
+router.post('/idsProductosXSegmento', cController.idsProductosXSegmento);
+router.post('/idsProductosXSubmarca', cController.idsProductosXSubmarca);
 
 
 export default router;
