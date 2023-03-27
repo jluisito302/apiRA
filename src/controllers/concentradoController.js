@@ -33,7 +33,7 @@ const findSemanas = async (req, res) => {
 
 const findTiendas = async (req, res) => {
     try {
-        const queryTiendas = await modelTiendas.find().limit(50);
+        const queryTiendas = await modelTiendas.find();
         res.json(queryTiendas);
     } catch (error) {
         const response={
@@ -46,7 +46,7 @@ const findTiendas = async (req, res) => {
 
 const findProductos = async (req, res) => {
     try {
-        const queryProductos = await modelProductos.find().limit(50);
+        const queryProductos = await modelProductos.find();
         res.json(queryProductos);
     } catch (error) {
         console.log(error);
@@ -82,7 +82,7 @@ const agruparSemana = async (req,res) => {
 
             }},
             {$sort: {semana: -1}}
-        ]);
+        ]).allowDiskUse(true);
         res.json(ventasSemana);
     } catch (error) {
         const response={
@@ -119,7 +119,7 @@ const agrupadoGrupoSemana = async (req,res) => {
                     }
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         res.json(ventasSemanaGrupo);
     } catch (error) {
         const response={
@@ -154,7 +154,7 @@ const agrupadoCadenaSemana = async (req,res) => {
                     $sum: "$existenciasUnidades",
                 }
             }}
-        ]);
+        ]).allowDiskUse(true);
         res.json(ventasSemanaGrupo);
     } catch (error) {
         const response={
@@ -186,7 +186,7 @@ const agrupadoMarca = async (req,res) => {
                     $sum: "$existenciasUnidades",
                 }
             }}
-        ]);
+        ]).allowDiskUse(true);
         res.json(groupMarcas);
     } catch (error) {
         const response={
@@ -231,7 +231,7 @@ const ventasTop = async (req,res) => {
             }},
             {$sort: {topVentasUnidades: -1}},
             {$limit : 25}
-        ]);
+        ]).allowDiskUse(true);
         res.json(groupMarcas);
     } catch (error) {
         const response={
@@ -265,7 +265,7 @@ const agVentasXProducto = async (req,res) => {
                     $sum: "$existenciasUnidades",
                 }
             }}
-        ]);
+        ]).allowDiskUse(true);
         res.json(ventasSemanaGrupo);
     } catch (error) {
         const response={
@@ -305,7 +305,7 @@ const filtro = async (req,res) => {
                     }
                 },
                 {$sort: {semana: -1}}
-            ]);
+            ]).allowDiskUse(true);
             
         res.json(allSemanas);
         }else{
@@ -339,6 +339,48 @@ const filtro = async (req,res) => {
         res.json(allSemanas);
         }
         
+        
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."+error
+        }
+        res.json(response);
+    }
+}
+
+const agrupadoPorProducto = async (req,res) => {
+    try {
+        let semanas=req.body.semanas;
+        let idProductos=req.body.arrayIdProductos;
+
+        const allSemanas = await concentradovwModel.aggregate([
+            {
+                $match: {
+                    "semana":{$in: semanas},
+                    "idProducto": {$in: idProductos}
+                },
+            },
+            {
+                $group: { _id: "$idProducto",
+                    ventasImporte: {
+                        $sum: "$ventasImporte",
+                    },
+                    ventasUnidades: {
+                        $sum: "$ventasUnidades",
+                    },
+                    existenciasImporte: {
+                        $sum: "$existenciasImporte",
+                    },
+                    existenciasUnidades: {
+                        $sum: "$existenciasUnidades",
+                    },
+                    "semana":{$first:"$semana"},
+                }
+            },
+            {$sort: {semana: -1}}
+        ]).allowDiskUse(true);
+            
+        res.json(allSemanas);
         
     } catch (error) {
         const response={
@@ -455,10 +497,9 @@ const buscarXGrupoXSemana = async (req,res) => {
                     $sum: "$existenciasUnidades",
                 },
                 "idGFC":{$first:"$idGFC"},
-
             }},
             {$sort: {semana: -1}}
-        ]);
+        ]).allowDiskUse(true);
         res.json(ventasSemana);
     } catch (error) {
         const response={
@@ -491,10 +532,9 @@ const buscarXCadenaXSemana = async (req,res) => {
                     $sum: "$existenciasUnidades",
                 },
                 "idGFC":{$first:"$idGFC"},
-
             }},
             {$sort: {semana: -1}}
-        ]);
+        ]).allowDiskUse(true);
         res.json(ventasSemana);
     } catch (error) {
         const response={
@@ -516,7 +556,7 @@ const searchCadena = async (req,res) => {
                     "cadena":{$first:"$cadena"}
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         res.json(cadena);
     } catch (error) {
         const response={
@@ -538,7 +578,7 @@ const searchGrupo = async (req,res) => {
                     "categoria":{$first:"$grupo"}
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         
         res.json(grupoCategoria);
     } catch (error) {
@@ -574,7 +614,7 @@ const idsProductosXMarca = async (req,res) => {
                     "idProducto": { $first: "$id" }
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         
         res.json(grupoCategoria);
     } catch (error) {
@@ -596,7 +636,7 @@ const idsProductosXCategoria = async (req,res) => {
                     "idProducto": { $first: "$id" }
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         
         res.json(productosCategoria);
     } catch (error) {
@@ -618,7 +658,7 @@ const idsProductosXFabricante = async (req,res) => {
                     "idProducto": { $first: "$id" }
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         
         res.json(productosFabricante);
     } catch (error) {
@@ -640,7 +680,7 @@ const idsProductosXSubcategoria = async (req,res) => {
                     "idProducto": { $first: "$id" }
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         
         res.json(productosSubcategoria);
     } catch (error) {
@@ -662,7 +702,7 @@ const idsProductosXCapacidad = async (req,res) => {
                     "idProducto": { $first: "$id" }
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         
         res.json(productosCapacidad);
     } catch (error) {
@@ -684,7 +724,7 @@ const idsProductosXPresentacion = async (req,res) => {
                     "idProducto": { $first: "$id" }
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         
         res.json(productosPresentacion);
     } catch (error) {
@@ -706,7 +746,7 @@ const idsProductosXSegmento = async (req,res) => {
                     "idProducto": { $first: "$id" }
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         
         res.json(productosSegmento);
     } catch (error) {
@@ -728,7 +768,7 @@ const idsProductosXSubmarca = async (req,res) => {
                     "idProducto": { $first: "$id" }
                 }
             }
-        ]);
+        ]).allowDiskUse(true);
         
         res.json(productosSubmarca);
     } catch (error) {
@@ -739,7 +779,29 @@ const idsProductosXSubmarca = async (req,res) => {
     }
 }
 
+const allDataWeek = async (req,res) => {
+    try {
+        let semanas=req.body.semanas;
+        
+        const allSemanas = await concentradovwModel.aggregate([
+            {
+                $match: {
+                    "semana":{$in: semanas}
+                }
+            }
+        ]).allowDiskUse(true);
 
+            
+        res.json(allSemanas);
+        
+        
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."+error
+        }
+        res.json(response);
+    }
+}
 
 
 
@@ -775,4 +837,6 @@ export {
     idsProductosXPresentacion,
     idsProductosXSegmento,
     idsProductosXSubmarca,
+    allDataWeek,
+    agrupadoPorProducto,
 }

@@ -33,6 +33,7 @@ router.get('/capacidad', cController.capacidad);
 
 
 router.post('/filtros', cController.filtro);
+router.post('/semanaDatosCompletos', cController.allDataWeek);
 router.post('/searchCadena', cController.searchCadena);
 router.post('/searchGrupo', cController.searchGrupo);
 router.post('/buscarXGrupoXSemana', cController.buscarXGrupoXSemana);
@@ -45,6 +46,7 @@ router.post('/idsProductosXCapacidad', cController.idsProductosXCapacidad);
 router.post('/idsProductosXPresentacion', cController.idsProductosXPresentacion);
 router.post('/idsProductosXSegmento', cController.idsProductosXSegmento);
 router.post('/idsProductosXSubmarca', cController.idsProductosXSubmarca);
-
+//buscar ventas por producto
+router.post('/agrupadoPorProducto', cController.agrupadoPorProducto);
 
 export default router;
