@@ -360,23 +360,20 @@ const agrupadoPorProducto = async (req,res) => {
                     "idProducto": {$in: idProductos}
                 },
             },
-            {
-                $group: { _id: "$idProducto",
-                    ventasImporte: {
-                        $sum: "$ventasImporte",
-                    },
-                    ventasUnidades: {
-                        $sum: "$ventasUnidades",
-                    },
-                    existenciasImporte: {
-                        $sum: "$existenciasImporte",
-                    },
-                    existenciasUnidades: {
-                        $sum: "$existenciasUnidades",
-                    },
-                    "semana":{$first:"$semana"},
+            {$group: { _id: "$propet",
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
                 }
-            },
+            }},
             {$sort: {semana: -1}}
         ]).allowDiskUse(true);
             
