@@ -33,7 +33,7 @@ const findSemanas = async (req, res) => {
 
 const findTiendas = async (req, res) => {
     try {
-        const queryTiendas = await modelTiendas.find();
+        const queryTiendas = await modelTiendas.find().limit(4000);
         res.json(queryTiendas);
     } catch (error) {
         const response={
@@ -471,6 +471,18 @@ const capacidad = async (req,res) => {
     }
 }
 
+const grupo = async (req,res) => {
+    try {
+        const capacidad = await modelTiendas.distinct("capacidad");
+        res.json(capacidad);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
 const buscarXGrupoXSemana = async (req,res) => {
     try {
         const semanasArray=req.body.semanas;
@@ -585,6 +597,33 @@ const searchGrupo = async (req,res) => {
         res.json(response);
     }
 }
+
+const getGrupo = async (req,res) => {
+    try {
+        const grupo = await modelTiendas.distinct("grupo");
+        
+        res.json(grupo);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
+const getCadena = async (req,res) => {
+    try {
+        const grupo = await modelTiendas.distinct("cadena");
+        
+        res.json(grupo);
+    } catch (error) {
+        const response={
+            "message": "Error encontrado... "+error
+        }
+        res.json(response);
+    }
+}
+
 
 /*
 const lineTox = async (req,res) => {
@@ -836,4 +875,6 @@ export {
     idsProductosXSubmarca,
     allDataWeek,
     agrupadoPorProducto,
+    getGrupo,
+    getCadena,
 }

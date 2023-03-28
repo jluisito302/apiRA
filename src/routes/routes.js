@@ -29,8 +29,8 @@ router.get('/presentacion', cController.presentacion);
 router.get('/capacidad', cController.capacidad);
 
 //router.get('/linea', cController.lineTox);
-
-
+router.get('/getGrupo', cController.getGrupo);
+router.get('/getCadena', cController.getCadena);
 
 router.post('/filtros', cController.filtro);
 router.post('/semanaDatosCompletos', cController.allDataWeek);
