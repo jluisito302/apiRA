@@ -59,7 +59,7 @@ const findProductos = async (req, res) => {
 const findProductoNombre = async (req, res) => {
     try {
         const nombreproducto=req.body.nombreProducto;
-        console.log(nombreproducto);
+        
         const producto = await modelProductos.find({nombre: nombreproducto});
         res.json(producto);
     } catch (error) {
@@ -374,6 +374,45 @@ const agrupadoPorProducto = async (req,res) => {
                 },
             },
             {$group: { _id: "$propet",
+                ventasImporte: {
+                    $sum: "$ventasImporte",
+                },
+                ventasUnidades: {
+                    $sum: "$ventasUnidades",
+                },
+                existenciasImporte: {
+                    $sum: "$existenciasImporte",
+                },
+                existenciasUnidades: {
+                    $sum: "$existenciasUnidades",
+                }
+            }},
+            {$sort: {semana: -1}}
+        ]).allowDiskUse(true);
+            
+        res.json(allSemanas);
+        
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."+error
+        }
+        res.json(response);
+    }
+}
+
+const agruparSemanaIdProducto = async (req,res) => {
+    try {
+        let semanas=req.body.semanas;
+        let idProducto=req.body.idProducto;
+
+        const allSemanas = await concentradovwModel.aggregate([
+            {
+                $match: {
+                    "semana":{$in: semanas},
+                    "idProducto": idProducto
+                },
+            },
+            {$group: { _id: "$idProducto",
                 ventasImporte: {
                     $sum: "$ventasImporte",
                 },
@@ -889,5 +928,6 @@ export {
     agrupadoPorProducto,
     getGrupo,
     getCadena,
-    findProductoNombre
+    findProductoNombre,
+    agruparSemanaIdProducto
 }

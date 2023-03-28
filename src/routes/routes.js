@@ -50,6 +50,8 @@ router.post('/idsProductosXSubmarca', cController.idsProductosXSubmarca);
 //buscar ventas por producto
 router.post('/agrupadoPorProducto', cController.agrupadoPorProducto);
 router.post('/buscarProducto', cController.findProductoNombre);
+router.post('/agruparSemanaIdProducto', cController.agruparSemanaIdProducto);
+
 
 
 export default router;
