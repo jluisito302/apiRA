@@ -891,6 +891,112 @@ const allDataWeek = async (req,res) => {
     }
 }
 
+//FILTROS POR SEMANAS POR TIENDAS
+const filtroTiendasProductos = async (req,res) => {
+    try {
+        let semanas=req.body.semanas;
+        let idProductos=req.body.arrayIdProductos;
+        let idTiendas=req.body.arrayIdTiendas;
+        if(idProductos != null){
+            const allSemanas = await concentradovwModel.aggregate([
+                {
+                    $match: {
+                        "semana":{$in: semanas},
+                        "idProducto": {$in: idProductos}
+                    },
+                },
+                {
+                    $group: { _id: "$semana",
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "semana":{$first:"$semana"},
+                    }
+                },
+                {$sort: {semana: -1}}
+            ]).allowDiskUse(true);
+            
+        res.json(allSemanas);
+        }
+        //SI TRAE EL ID TIENDAS
+        if(idTiendas != null){
+            const allSemanas = await concentradovwModel.aggregate([
+                {
+                    $match: {
+                        "semana":{$in: semanas},
+                        "idProducto": {$in: idProductos},
+                        "idTienda": {$in: idTiendaS}
+                    },
+                },
+                {
+                    $group: { _id: "$semana",
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "semana":{$first:"$semana"},
+                    }
+                },
+                {$sort: {semana: -1}}
+            ]).allowDiskUse(true);
+            
+        res.json(allSemanas);
+        }else{
+            const allSemanas = await concentradovwModel.aggregate([
+                {
+                    $match: {
+                        "semana":{$in: semanas}
+                    }
+                },
+                {
+                    $group: { _id: "$semana",
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "semana":{$first:"$semana"},
+                    }
+                },
+                {$sort: {semana: -1}}
+            ]);
+
+            
+        res.json(allSemanas);
+        }
+        
+        
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."+error
+        }
+        res.json(response);
+    }
+}
 
 export {
     findAnyEntry,
@@ -929,5 +1035,6 @@ export {
     getGrupo,
     getCadena,
     findProductoNombre,
-    agruparSemanaIdProducto
+    agruparSemanaIdProducto,
+    filtroTiendasProductos
 }

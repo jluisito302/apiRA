@@ -51,7 +51,7 @@ router.post('/idsProductosXSubmarca', cController.idsProductosXSubmarca);
 router.post('/agrupadoPorProducto', cController.agrupadoPorProducto);
 router.post('/buscarProducto', cController.findProductoNombre);
 router.post('/agruparSemanaIdProducto', cController.agruparSemanaIdProducto);
-
+router.post('/filtroTiendasProductos', cController.filtroTiendasProductos);
 
 
 export default router;
