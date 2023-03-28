@@ -31,6 +31,7 @@ router.get('/capacidad', cController.capacidad);
 //router.get('/linea', cController.lineTox);
 router.get('/getGrupo', cController.getGrupo);
 router.get('/getCadena', cController.getCadena);
+router.get('/getTiendas', cController.findTiendas);
 
 router.post('/filtros', cController.filtro);
 router.post('/semanaDatosCompletos', cController.allDataWeek);
