@@ -46,12 +46,25 @@ const findTiendas = async (req, res) => {
 
 const findProductos = async (req, res) => {
     try {
-        const queryProductos = await modelProductos.find();
-        res.json(queryProductos);
+        const productos = await modelProductos.find();
+        res.json(productos);
     } catch (error) {
-        console.log(error);
         const response={
-            "message": "Error ..."
+            "message": "Error ..."+error
+        }
+        res.json(response);
+    }
+}
+
+const findProductoNombre = async (req, res) => {
+    try {
+        const nombreproducto=req.body.nombreProducto;
+        console.log(nombreproducto);
+        const producto = await modelProductos.find({nombre: nombreproducto});
+        res.json(producto);
+    } catch (error) {
+        const response={
+            "message": "Error ... "+error
         }
         res.json(response);
     }
@@ -840,7 +853,6 @@ const allDataWeek = async (req,res) => {
 }
 
 
-
 export {
     findAnyEntry,
     findPaginate,
@@ -877,4 +889,5 @@ export {
     agrupadoPorProducto,
     getGrupo,
     getCadena,
+    findProductoNombre
 }

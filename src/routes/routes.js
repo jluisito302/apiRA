@@ -49,5 +49,7 @@ router.post('/idsProductosXSegmento', cController.idsProductosXSegmento);
 router.post('/idsProductosXSubmarca', cController.idsProductosXSubmarca);
 //buscar ventas por producto
 router.post('/agrupadoPorProducto', cController.agrupadoPorProducto);
+router.post('/buscarProducto', cController.findProductoNombre);
+
 
 export default router;
