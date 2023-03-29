@@ -52,6 +52,9 @@ router.post('/agrupadoPorProducto', cController.agrupadoPorProducto);
 router.post('/buscarProducto', cController.findProductoNombre);
 router.post('/agruparSemanaIdProducto', cController.agruparSemanaIdProducto);
 router.post('/filtroTiendasProductos', cController.filtroTiendasProductos);
+//BUSQUEDA DE TIENDAS
+router.post('/buscarTiendasXGrupo', cController.buscarTiendasXGrupo);
+router.post('/buscarTiendasXCadena', cController.buscarTiendasXCadena);
 
 
 export default router;

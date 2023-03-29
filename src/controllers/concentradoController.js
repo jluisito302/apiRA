@@ -998,6 +998,34 @@ const filtroTiendasProductos = async (req,res) => {
     }
 }
 
+const buscarTiendasXGrupo = async (req, res) => {
+    try {
+        let grupoString=req.body.grupo;
+        const queryTiendas = await modelTiendas.find({grupo:grupoString},{ id:1, Nombre:1, grupo:1});
+        res.json(queryTiendas);
+    } catch (error) {
+        const response={
+            "message": "Error ...",
+            "error": error
+        }
+        res.json(response);
+    }
+}
+
+const buscarTiendasXCadena = async (req, res) => {
+    try {
+        let cadenaString=req.body.cadena;
+        const queryTiendas = await modelTiendas.find({cadena:cadenaString},{ id:1, Nombre:1, grupo:1});
+        res.json(queryTiendas);
+    } catch (error) {
+        const response={
+            "message": "Error ...",
+            "error": error
+        }
+        res.json(response);
+    }
+}
+
 export {
     findAnyEntry,
     findPaginate,
@@ -1036,5 +1064,7 @@ export {
     getCadena,
     findProductoNombre,
     agruparSemanaIdProducto,
-    filtroTiendasProductos
+    filtroTiendasProductos,
+    buscarTiendasXGrupo,
+    buscarTiendasXCadena
 }
