@@ -1,5 +1,7 @@
 import { Router } from "express";
 import * as cController from "../controllers/concentradoController";
+import * as concentrado2022 from "../controllers/concentradoController2022";
+import * as concentrado2023 from "../controllers/concentradoController2023";
 
 const router = Router();
 
@@ -56,5 +58,18 @@ router.post('/filtroTiendasProductos', cController.filtroTiendasProductos);
 router.post('/buscarTiendasXGrupo', cController.buscarTiendasXGrupo);
 router.post('/buscarTiendasXCadena', cController.buscarTiendasXCadena);
 
+// CONSULTAS POR AÑO (2022)
+router.post('/filtros_2022', concentrado2022.filtro);
+router.post('/filtroTiendasProductos_2022', concentrado2022.filtroTiendasProductos);
+router.post('/agruparGrupo_2022', concentrado2022.agrupadoGrupoSemana);
+router.post('/agrupadoMarca_2022', concentrado2022.agrupadoMarca);
+router.post('/ventasTop_2022', concentrado2022.ventasTop);
+
+// CONSULTAS POR AÑO (2023)
+router.post('/filtros_2023', concentrado2023.filtro);
+router.post('/filtroTiendasProductos_2023', concentrado2023.filtroTiendasProductos);
+router.post('/agruparGrupo_2023', concentrado2023.agrupadoGrupoSemana);
+router.post('/agrupadoMarca_2023', concentrado2023.agrupadoMarca);
+router.post('/ventasTop_2023', concentrado2023.ventasTop);
 
 export default router;

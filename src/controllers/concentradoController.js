@@ -369,7 +369,8 @@ const filtro = async (req,res) => {
                         },
                         existenciasUnidades: {
                             $sum: "$existenciasUnidades",
-                        }
+                        },
+                        "semana":{$first:"$semana"},
                     }
                 },
                 {$sort: {semana: 1}}
@@ -1005,7 +1006,8 @@ const filtroTiendasProductos = async (req,res) => {
                         },
                         existenciasUnidades: {
                             $sum: "$existenciasUnidades",
-                        }
+                        },
+                        "semana":{$first:"$semana"},
                     }
                 },
                 {$sort: {semana: 1}}
