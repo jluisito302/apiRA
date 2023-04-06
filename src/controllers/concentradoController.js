@@ -953,6 +953,38 @@ const filtroTiendasProductos = async (req,res) => {
         let semanas=req.body.semanas;
         let idProductos=req.body.arrayIdProductos;
         let idTiendas=req.body.arrayIdTiendas;
+        if(idTiendas != null && idProductos != null){
+            const allSemanas = await concentradovwModel.aggregate([
+                {
+                    $match: {
+                        "semana":{$in: semanas},
+                        "idProducto": {$in: idProductos},
+                        "idTienda": {$in: idTiendas}
+                    },
+                },
+                {
+                    $group: { _id: "$semana",
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "semana":{$first:"$semana"},
+                    }
+                },
+                {$sort: {semana: 1}}
+            ]).allowDiskUse(true);
+            
+            return res.json(allSemanas);
+        }
+
         if(idProductos != null){
             const allSemanas = await concentradovwModel.aggregate([
                 {
@@ -981,39 +1013,7 @@ const filtroTiendasProductos = async (req,res) => {
                 {$sort: {semana: 1}}
             ]).allowDiskUse(true);
             
-        res.json(allSemanas);
-        }
-        //SI TRAE EL ID TIENDAS
-        if(idTiendas != null){
-            const allSemanas = await concentradovwModel.aggregate([
-                {
-                    $match: {
-                        "semana":{$in: semanas},
-                        "idProducto": {$in: idProductos},
-                        "idTienda": {$in: idTiendaS}
-                    },
-                },
-                {
-                    $group: { _id: "$semana",
-                        ventasImporte: {
-                            $sum: "$ventasImporte",
-                        },
-                        ventasUnidades: {
-                            $sum: "$ventasUnidades",
-                        },
-                        existenciasImporte: {
-                            $sum: "$existenciasImporte",
-                        },
-                        existenciasUnidades: {
-                            $sum: "$existenciasUnidades",
-                        },
-                        "semana":{$first:"$semana"},
-                    }
-                },
-                {$sort: {semana: 1}}
-            ]).allowDiskUse(true);
-            
-        res.json(allSemanas);
+            return res.json(allSemanas);
         }else{
             const allSemanas = await concentradovwModel.aggregate([
                 {
@@ -1042,7 +1042,7 @@ const filtroTiendasProductos = async (req,res) => {
             ]);
 
             
-        res.json(allSemanas);
+            return res.json(allSemanas);
         }
         
         
