@@ -33,7 +33,7 @@ const findSemanas = async (req, res) => {
 
 const findTiendas = async (req, res) => {
     try {
-        const queryTiendas = await modelTiendas.find({},{ id:1, Nombre:1, grupo:1}).limit(4000);
+        const queryTiendas = await modelTiendas.find({},{ id:1, Nombre:1, grupo:1});
         res.json(queryTiendas);
     } catch (error) {
         const response={
