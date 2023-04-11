@@ -27,9 +27,11 @@ const agrupadoGrupoSemana = async (req,res) => {
                         },
                         existenciasUnidades: {
                             $sum: "$existenciasUnidades",
-                        }
+                        },
+                        "idgfc":{$first:"$idGFC"},
                     }
-                }
+                },
+                {$sort: {idgfc: 1}}
             ]).allowDiskUse(true);
             return res.json(ventasSemanaGrupo);
         }else{
@@ -52,9 +54,11 @@ const agrupadoGrupoSemana = async (req,res) => {
                         },
                         existenciasUnidades: {
                             $sum: "$existenciasUnidades",
-                        }
+                        },
+                        "idgfc":{$first:"$idGFC"},
                     }
-                }
+                },
+                {$sort: {idgfc: 1}}
             ]).allowDiskUse(true);
             return res.json(ventasSemanaGrupo);
         }
@@ -62,7 +66,7 @@ const agrupadoGrupoSemana = async (req,res) => {
         
     } catch (error) {
         const response={
-            "message": "Error encontrado..."
+            "message": "Error encontrado..."+error
         }
         res.json(response);
     }
@@ -93,8 +97,10 @@ const agrupadoMarca = async (req,res) => {
                     },
                     existenciasUnidades: {
                         $sum: "$existenciasUnidades",
-                    }
-                }}
+                    },
+                    "idgfc":{$first:"$idGFC"},
+                }},
+                {$sort: {idgfc: 1}}
             ]).allowDiskUse(true);
             return res.json(groupMarcas);
         }
@@ -117,8 +123,10 @@ const agrupadoMarca = async (req,res) => {
                     },
                     existenciasUnidades: {
                         $sum: "$existenciasUnidades",
-                    }
-                }}
+                    },
+                    "idgfc":{$first:"$idGFC"}
+                }},
+                {$sort: {idgfc: 1}}
             ]).allowDiskUse(true);
             return res.json(groupMarcas);
         }else{
@@ -138,14 +146,16 @@ const agrupadoMarca = async (req,res) => {
                     },
                     existenciasUnidades: {
                         $sum: "$existenciasUnidades",
-                    }
-                }}
+                    },
+                    "idgfc":{$first:"$idGFC"}
+                }},
+                {$sort: {idgfc: 1}}
             ]).allowDiskUse(true);
             return res.json(groupMarcas);
         }
     } catch (error) {
         const response={
-            "message": "Error encontrado..."
+            "message": "Error encontrado..."+error
         }
         res.json(response);
     }

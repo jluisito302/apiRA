@@ -120,7 +120,6 @@ const agrupadoGrupoSemana = async (req,res) => {
                 }},
                 {
                     $group: { _id: "$idGFC",
-                        numeroRegistros:{$sum: 1}, 
                         ventasImporte: {
                             $sum: "$ventasImporte",
                         },
@@ -132,9 +131,11 @@ const agrupadoGrupoSemana = async (req,res) => {
                         },
                         existenciasUnidades: {
                             $sum: "$existenciasUnidades",
-                        }
+                        },
+                        "idgfc":{$first:"$idGFC"},
                     }
-                }
+                },
+                {$sort: {idgfc: 1}}
             ]).allowDiskUse(true);
             res.json(ventasSemanaGrupo);
         }else{
@@ -145,7 +146,6 @@ const agrupadoGrupoSemana = async (req,res) => {
                 }},
                 {
                     $group: { _id: "$idGFC",
-                        numeroRegistros:{$sum: 1}, 
                         ventasImporte: {
                             $sum: "$ventasImporte",
                         },
@@ -157,9 +157,11 @@ const agrupadoGrupoSemana = async (req,res) => {
                         },
                         existenciasUnidades: {
                             $sum: "$existenciasUnidades",
-                        }
+                        },
+                        "idgfc":{$first:"$idGFC"},
                     }
-                }
+                },
+                {$sort: {idgfc: 1}}
             ]).allowDiskUse(true);
             res.json(ventasSemanaGrupo);
         }
@@ -183,21 +185,24 @@ const agrupadoCadenaSemana = async (req,res) => {
                 "idGFC":{$in: idgfcArray},
                 "semana":{ $in : semanasArray}
             }},
-            {$group: { _id: "$idGFC",
-                numeroRegistros:{$sum: 1}, 
-                ventasImporte: {
-                    $sum: "$ventasImporte",
-                },
-                ventasUnidades: {
-                    $sum: "$ventasUnidades",
-                },
-                existenciasImporte: {
-                    $sum: "$existenciasImporte",
-                },
-                existenciasUnidades: {
-                    $sum: "$existenciasUnidades",
+            {
+                $group: { _id: "$idGFC",
+                    ventasImporte: {
+                        $sum: "$ventasImporte",
+                    },
+                    ventasUnidades: {
+                        $sum: "$ventasUnidades",
+                    },
+                    existenciasImporte: {
+                        $sum: "$existenciasImporte",
+                    },
+                    existenciasUnidades: {
+                        $sum: "$existenciasUnidades",
+                    },
+                    "idgfc":{$first:"$idGFC"},
                 }
-            }}
+            },
+            {$sort: {idgfc: 1}}
         ]).allowDiskUse(true);
         res.json(ventasSemanaGrupo);
     } catch (error) {
@@ -231,8 +236,10 @@ const agrupadoMarca = async (req,res) => {
                     },
                     existenciasUnidades: {
                         $sum: "$existenciasUnidades",
-                    }
-                }}
+                    },
+                    "propet":{$first:"$propet"},
+                }},
+                {$sort: {idgfc: 1}}
             ]).allowDiskUse(true);
             res.json(groupMarcas);
         }else{
@@ -252,8 +259,10 @@ const agrupadoMarca = async (req,res) => {
                     },
                     existenciasUnidades: {
                         $sum: "$existenciasUnidades",
-                    }
-                }}
+                    },
+                    "propet":{$first:"$propet"},
+                }},
+                {$sort: {idgfc: 1}}
             ]).allowDiskUse(true);
             res.json(groupMarcas);
         }
