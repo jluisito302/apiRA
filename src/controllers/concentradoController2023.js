@@ -5,6 +5,38 @@ const agrupadoGrupoSemana = async (req,res) => {
         const semanasArray=req.body.semanas;
         const idgfcArray=req.body.idGFC;
         const idsProductos=req.body.idProductos;
+        const idTiendas=req.body.idTiendas;
+
+        if(idsProductos != null && idTiendas != null){
+            const ventasSemanaGrupo = await concentradovw2023.aggregate([
+                {$match: {
+                    "idGFC":{$in: idgfcArray},
+                    "semana":{ $in: semanasArray},
+                    "idProducto": {$in: idsProductos},
+                    "idTienda": {$in: idTiendas},
+                }},
+                {
+                    $group: { _id: "$idGFC",
+                        numeroRegistros:{$sum: 1}, 
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "idgfc":{$first:"$idGFC"},
+                    }
+                },
+                {$sort: {idgfc: 1}}
+            ]).allowDiskUse(true);
+            return res.json(ventasSemanaGrupo);
+        }
 
         if(idsProductos != null){
             const ventasSemanaGrupo = await concentradovw2023.aggregate([
