@@ -15,6 +15,7 @@ const findPaginate = async (req, res) => {
 }
 
 const findSemanas = async (req, res) => {
+    /*
     try {
         const semanasArray=req.body.semanas;
     
@@ -28,7 +29,7 @@ const findSemanas = async (req, res) => {
             "message": "Error la data es incorrecta ..."
         }
         res.json(response);
-    }
+    }*/
 }
 
 const findTiendas = async (req, res) => {

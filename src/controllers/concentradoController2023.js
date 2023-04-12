@@ -3,16 +3,14 @@ import concentradovw2023 from '../models/concentradovw2023';
 const agrupadoGrupoSemana = async (req,res) => {
     try {
         const semanasArray=req.body.semanas;
-        const idgfcArray=req.body.idGFC;
-        const idsProductos=req.body.idProductos;
-        const idTiendas=req.body.idTiendas;
-
-        if(idsProductos != null && idTiendas != null){
+        //const idgfcArray=req.body.idsGFC;
+        const idProductos=req.body.idsProductos;
+        const idTiendas=req.body.idsTiendas;
+        if(idProductos != null && idTiendas != null){
             const ventasSemanaGrupo = await concentradovw2023.aggregate([
                 {$match: {
-                    "idGFC":{$in: idgfcArray},
                     "semana":{ $in: semanasArray},
-                    "idProducto": {$in: idsProductos},
+                    "idProducto": {$in: idProductos},
                     "idTienda": {$in: idTiendas},
                 }},
                 {
@@ -38,12 +36,11 @@ const agrupadoGrupoSemana = async (req,res) => {
             return res.json(ventasSemanaGrupo);
         }
 
-        if(idsProductos != null){
+        if(idProductos != null){
             const ventasSemanaGrupo = await concentradovw2023.aggregate([
                 {$match: {
-                    "idGFC":{$in: idgfcArray},
                     "semana":{ $in: semanasArray},
-                    "idProducto": {$in: idsProductos}
+                    "idProducto": {$in: idProductos}
                 }},
                 {
                     $group: { _id: "$idGFC",
@@ -69,7 +66,6 @@ const agrupadoGrupoSemana = async (req,res) => {
         }else{
             const ventasSemanaGrupo = await concentradovw2023.aggregate([
                 {$match: {
-                    "idGFC":{$in: idgfcArray},
                     "semana":{ $in : semanasArray}
                 }},
                 {
@@ -107,8 +103,8 @@ const agrupadoGrupoSemana = async (req,res) => {
 const agrupadoMarca = async (req,res) => {
     try {
         const semanasArray=req.body.semanas;
-        const idsProductos=req.body.idProductos;
-        let idTiendas=req.body.idTiendas;
+        const idsProductos=req.body.idsProductos;
+        let idTiendas=req.body.idsTiendas;
         
         if(idTiendas != null && idsProductos != null){
             const groupMarcas = await concentradovw2023.aggregate([
@@ -196,7 +192,7 @@ const agrupadoMarca = async (req,res) => {
 const ventasTop = async (req,res) => {
     try {
         const semanasArray=req.body.semanas;
-        let idTiendas=req.body.idTiendas;
+        const idTiendas=req.body.idsTiendas;
         if(idTiendas != null){
             const groupMarcas = await concentradovw2023.aggregate([
                 {$match: {
@@ -254,7 +250,7 @@ const ventasTop = async (req,res) => {
 const filtro = async (req,res) => {
     try {
         let semanas=req.body.semanas;
-        let idProductos=req.body.arrayIdProductos;
+        let idProductos=req.body.idsProductos;
         if(idProductos != null){
             const allSemanas = await concentradovw2023.aggregate([
                 {
@@ -328,8 +324,8 @@ const filtro = async (req,res) => {
 const filtroTiendasProductos = async (req,res) => {
     try {
         let semanas=req.body.semanas;
-        let idProductos=req.body.arrayIdProductos;
-        let idTiendas=req.body.arrayIdTiendas;
+        let idProductos=req.body.idsProductos;
+        let idTiendas=req.body.idsTiendas;
         if(idTiendas != null && idProductos != null){
             const allSemanas = await concentradovw2023.aggregate([
                 {
