@@ -8,7 +8,7 @@ const agrupadoGrupoSemana = async (req,res) => {
         const idTiendas=req.body.idsTiendas;
 
         if(idsProductos != null && idTiendas != null){
-            const ventasSemanaGrupo = await concentradovw2023.aggregate([
+            const ventasSemanaGrupo = await concentradovw2022.aggregate([
                 {$match: {
                     "semana":{ $in: semanasArray},
                     "idProducto": {$in: idsProductos},
