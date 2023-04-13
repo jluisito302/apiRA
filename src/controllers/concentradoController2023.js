@@ -3,19 +3,19 @@ import concentradovw2023 from '../models/concentradovw2023';
 const agrupadoGrupoSemana = async (req,res) => {
     try {
         const semanasArray=req.body.semanas;
-        //const idgfcArray=req.body.idsGFC;
-        const idProductos=req.body.idsProductos;
+        const idgfcArray=req.body.idGFC;
+        const idsProductos=req.body.idsProductos;
         const idTiendas=req.body.idsTiendas;
-        if(idProductos != null && idTiendas != null){
+
+        if(idsProductos != null && idTiendas != null){
             const ventasSemanaGrupo = await concentradovw2023.aggregate([
                 {$match: {
                     "semana":{ $in: semanasArray},
-                    "idProducto": {$in: idProductos},
+                    "idProducto": {$in: idsProductos},
                     "idTienda": {$in: idTiendas},
                 }},
                 {
-                    $group: { _id: "$idGFC",
-                        numeroRegistros:{$sum: 1}, 
+                    $group: { _id: "$grupo",
                         ventasImporte: {
                             $sum: "$ventasImporte",
                         },
@@ -28,23 +28,22 @@ const agrupadoGrupoSemana = async (req,res) => {
                         existenciasUnidades: {
                             $sum: "$existenciasUnidades",
                         },
-                        "idgfc":{$first:"$idGFC"},
+                        "grupo":{$first:"$grupo"},
                     }
                 },
-                {$sort: {idgfc: 1}}
+                {$sort: {grupo: 1}}
             ]).allowDiskUse(true);
             return res.json(ventasSemanaGrupo);
         }
 
-        if(idProductos != null){
+        if(idsProductos != null){
             const ventasSemanaGrupo = await concentradovw2023.aggregate([
                 {$match: {
                     "semana":{ $in: semanasArray},
-                    "idProducto": {$in: idProductos}
+                    "idProducto": {$in: idsProductos}
                 }},
                 {
-                    $group: { _id: "$idGFC",
-                        numeroRegistros:{$sum: 1}, 
+                    $group: { _id: "$grupo",
                         ventasImporte: {
                             $sum: "$ventasImporte",
                         },
@@ -57,10 +56,10 @@ const agrupadoGrupoSemana = async (req,res) => {
                         existenciasUnidades: {
                             $sum: "$existenciasUnidades",
                         },
-                        "idgfc":{$first:"$idGFC"},
+                        "grupo":{$first:"$grupo"},
                     }
                 },
-                {$sort: {idgfc: 1}}
+                {$sort: {grupo: 1}}
             ]).allowDiskUse(true);
             return res.json(ventasSemanaGrupo);
         }else{
@@ -69,8 +68,7 @@ const agrupadoGrupoSemana = async (req,res) => {
                     "semana":{ $in : semanasArray}
                 }},
                 {
-                    $group: { _id: "$idGFC",
-                        numeroRegistros:{$sum: 1}, 
+                    $group: { _id: "$grupo",
                         ventasImporte: {
                             $sum: "$ventasImporte",
                         },
@@ -83,14 +81,109 @@ const agrupadoGrupoSemana = async (req,res) => {
                         existenciasUnidades: {
                             $sum: "$existenciasUnidades",
                         },
-                        "idgfc":{$first:"$idGFC"},
+                        "grupo":{$first:"$grupo"},
                     }
                 },
-                {$sort: {idgfc: 1}}
+                {$sort: {grupo: 1}}
             ]).allowDiskUse(true);
             return res.json(ventasSemanaGrupo);
         }
         
+    } catch (error) {
+        const response={
+            "message": "Error encontrado..."+error
+        }
+        res.json(response);
+    }
+}
+
+const agrupadoCadenaSemana = async (req,res) => {
+    try {
+        const semanasArray=req.body.semanas;
+        const idsProductos=req.body.idsProductos;
+        const idTiendas=req.body.idsTiendas;
+
+        if(idsProductos != null && idTiendas != null){
+            const ventasCadenaGrupo = await concentradovw2023.aggregate([
+                {$match: {
+                    "semana":{ $in: semanasArray},
+                    "idProducto": {$in: idsProductos},
+                    "idTienda": {$in: idTiendas},
+                }},
+                {
+                    $group: { _id: "$cadena",
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "cadena":{$first:"$cadena"},
+                    }
+                },
+                {$sort: {cadena: 1}}
+            ]).allowDiskUse(true);
+            return res.json(ventasCadenaGrupo);
+        }
+
+        if(idsProductos != null){
+            const ventasSemanaGrupo = await concentradovw2023.aggregate([
+                {$match: {
+                    "semana":{ $in: semanasArray},
+                    "idProducto": {$in: idsProductos}
+                }},
+                {
+                    $group: { _id: "$cadena",
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "cadena":{$first:"$cadena"},
+                    }
+                },
+                {$sort: {cadena: 1}}
+            ]).allowDiskUse(true);
+            return res.json(ventasSemanaGrupo);
+        }else{
+            const ventasSemanaGrupo = await concentradovw2023.aggregate([
+                {$match: {
+                    "semana":{ $in : semanasArray}
+                }},
+                {
+                    $group: { _id: "$cadena",
+                        ventasImporte: {
+                            $sum: "$ventasImporte",
+                        },
+                        ventasUnidades: {
+                            $sum: "$ventasUnidades",
+                        },
+                        existenciasImporte: {
+                            $sum: "$existenciasImporte",
+                        },
+                        existenciasUnidades: {
+                            $sum: "$existenciasUnidades",
+                        },
+                        "cadena":{$first:"$cadena"},
+                    }
+                },
+                {$sort: {cadena: 1}}
+            ]).allowDiskUse(true);
+            return res.json(ventasSemanaGrupo);
+        }
         
     } catch (error) {
         const response={
@@ -432,4 +525,5 @@ export {
     agrupadoGrupoSemana,
     agrupadoMarca,
     ventasTop,
+    agrupadoCadenaSemana
 }

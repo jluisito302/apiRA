@@ -62,6 +62,7 @@ router.post('/buscarTiendasXCadena', cController.buscarTiendasXCadena);
 router.post('/filtros_2022', concentrado2022.filtro);
 router.post('/filtroTiendasProductos_2022', concentrado2022.filtroTiendasProductos);
 router.post('/agruparGrupo_2022', concentrado2022.agrupadoGrupoSemana);
+router.post('/agruparCadena_2022', concentrado2022.agrupadoCadenaSemana);
 router.post('/agrupadoMarca_2022', concentrado2022.agrupadoMarca);
 router.post('/ventasTop_2022', concentrado2022.ventasTop);
 
@@ -69,6 +70,7 @@ router.post('/ventasTop_2022', concentrado2022.ventasTop);
 router.post('/filtros_2023', concentrado2023.filtro);
 router.post('/filtroTiendasProductos_2023', concentrado2023.filtroTiendasProductos);
 router.post('/agruparGrupo_2023', concentrado2023.agrupadoGrupoSemana);
+router.post('/agruparCadena_2023', concentrado2023.agrupadoCadenaSemana);
 router.post('/agrupadoMarca_2023', concentrado2023.agrupadoMarca);
 router.post('/ventasTop_2023', concentrado2023.ventasTop);
 
