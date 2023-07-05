@@ -2,6 +2,9 @@ import { Router } from "express";
 import * as cController from "../controllers/concentradoController";
 import * as concentrado2022 from "../controllers/concentradoController2022";
 import * as concentrado2023 from "../controllers/concentradoController2023";
+import * as reportes2023 from "../controllers/reportes2023Controller";
+import * as reportes2022 from "../controllers/reportes2022Controller";
+import * as catalogosController from "../controllers/catalogosController";
 
 const router = Router();
 
@@ -73,5 +76,20 @@ router.post('/agruparGrupo_2023', concentrado2023.agrupadoGrupoSemana);
 router.post('/agruparCadena_2023', concentrado2023.agrupadoCadenaSemana);
 router.post('/agrupadoMarca_2023', concentrado2023.agrupadoMarca);
 router.post('/ventasTop_2023', concentrado2023.ventasTop);
+
+//Catalogos
+router.get('/gruposBepensa', catalogosController.buscarGrupos);
+router.post('/cadenasBepensa', catalogosController.buscarCadenas);
+router.post('/tiendasBepensa', catalogosController.buscarTiendas);
+//Ventas Inventarios por grupo
+router.post('/ventasInventarios2023', reportes2023.ventasInventariosGrupo2023);
+router.post('/totalesVentasInv2023', reportes2023.totalesVentasInv2023);
+
+//2022
+router.post('/ventasInventarios2022', reportes2022.ventasInventariosGrupo2022);
+router.post('/totalesVentasInv2022', reportes2022.totalesVentasInv2022);
+
+//INVENTARIOS
+
 
 export default router;
