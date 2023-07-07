@@ -84,10 +84,13 @@ router.post('/tiendasBepensa', catalogosController.buscarTiendas);
 //Ventas Inventarios por grupo
 router.post('/ventasInventarios2023', reportes2023.ventasInventariosGrupo2023);
 router.post('/totalesVentasInv2023', reportes2023.totalesVentasInv2023);
+router.post('/ventasInventariosDias2023', reportes2023.ventasInventariosDias);
 
 //2022
 router.post('/ventasInventarios2022', reportes2022.ventasInventariosGrupo2022);
 router.post('/totalesVentasInv2022', reportes2022.totalesVentasInv2022);
+router.post('/ventasInventariosDias2022', reportes2022.ventasInventariosDias);
+
 
 //INVENTARIOS
 
