@@ -81,18 +81,24 @@ router.post('/ventasTop_2023', concentrado2023.ventasTop);
 router.get('/gruposBepensa', catalogosController.buscarGrupos);
 router.post('/cadenasBepensa', catalogosController.buscarCadenas);
 router.post('/tiendasBepensa', catalogosController.buscarTiendas);
-//Ventas Inventarios por grupo
+
+//2023
 router.post('/ventasInventarios2023', reportes2023.ventasInventariosGrupo2023);
 router.post('/totalesVentasInv2023', reportes2023.totalesVentasInv2023);
 router.post('/ventasInventariosDias2023', reportes2023.ventasInventariosDias);
+router.post('/ventasInventariosTiendas2023', reportes2023.ventasInventariosTienda);
+router.post('/ventasInventariosProductos2023', reportes2023.ventasInventariosProductos);
+router.post('/productosXTienda2023', reportes2023.productosXTienda);
+
 
 //2022
 router.post('/ventasInventarios2022', reportes2022.ventasInventariosGrupo2022);
 router.post('/totalesVentasInv2022', reportes2022.totalesVentasInv2022);
 router.post('/ventasInventariosDias2022', reportes2022.ventasInventariosDias);
+router.post('/ventasInventariosTiendas2022', reportes2022.ventasInventariosTienda);
+router.post('/ventasInventariosProductos2022', reportes2022.ventasInventariosProductos);
+router.post('/productosXTienda2022', reportes2022.productosXTienda);
 
-
-//INVENTARIOS
 
 
 export default router;

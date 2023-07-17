@@ -38,7 +38,9 @@ const tiendasSchema = new Schema({
     competencia:String,
     tipoventa:String,
     region:String,
-    grupo_region:String
+    grupo_region:String,
+    cadena:String,
+    grupo:String
 });
 
 export default model('cattiendas',tiendasSchema)
